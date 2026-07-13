@@ -2,6 +2,19 @@
 
 All notable changes to `laravel-mobile-pass` will be documented in this file.
 
+## 1.5.0 - 2026-07-13
+
+### What's Changed
+
+* Bump actions/checkout from 4 to 7 by @dependabot[bot] in https://github.com/spatie/laravel-mobile-pass/pull/51
+* Add iBeacon relevance support for Apple Wallet passes by @manfield in https://github.com/spatie/laravel-mobile-pass/pull/52
+
+### New Contributors
+
+* @manfield made their first contribution in https://github.com/spatie/laravel-mobile-pass/pull/52
+
+**Full Changelog**: https://github.com/spatie/laravel-mobile-pass/compare/1.4.0...1.5.0
+
 ## 1.4.0 - 2026-06-19
 
 ### What's new
@@ -13,6 +26,7 @@ EventTicketPassBuilder::make()
     // ...
     ->setBackgroundImage(public_path('images/background.png'))
     ->save();
+
 
 ```
 A remote variant, `setRemoteBackgroundImage()`, is available as well. The image (along with its @2x and @3x densities) is bundled into the generated `.pkpass`.
@@ -35,6 +49,7 @@ EventTicketPassClass::make('beatles-shea-1965')
     ->addTextModule('Doors', 'Doors open at 18:30')
     ->addImageModule('https://example.com/seating-chart.png', 'seating')
     ->save();
+
 
 
 ```
