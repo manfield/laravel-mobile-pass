@@ -1,5 +1,20 @@
 # Upgrading
 
+## Apple Wallet Internationalization
+
+This release adds Apple Wallet i18n support via a new `locales` nullable JSON column on the `mobile_passes` table.
+
+**New installs** — the column is included in `create_mobile_pass_tables` automatically.
+
+**Existing installs** — publish and run the new migration:
+
+```bash
+php artisan vendor:publish --tag="laravel-mobile-pass-migrations"
+php artisan migrate
+```
+
+---
+
 This release fixes the Apple PassKit webservice routes (#32). Previously, register-device, check-for-updates, and unregister-device looked up a `MobilePass` by its primary key, but Apple sends the value of `pass.json.serialNumber` as the `passSerial` route parameter. That value had no relation to the auto-generated UUID `id`, so every webservice request returned 404. This affected all installs, including those following the documented `->setSerialNumber('...')` API.
 
 The fix introduces a dedicated `pass_serial` column on `mobile_passes` and renames `apple_mobile_pass_registrations.pass_serial` to `mobile_pass_id` (which always referenced the pass's id, not the serial). `mobile_passes.id` keeps the same UUID and stays opaque, so it remains safe to expose via route model binding.
