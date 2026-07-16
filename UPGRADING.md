@@ -2,18 +2,22 @@
 
 ## Google Wallet i18n — LocalizedString for Loyalty and Offer pass classes
 
-`LoyaltyPassClass` and `OfferPassClass` now send Google Wallet's localized
-counterparts alongside their existing plain-string fields:
+`LoyaltyPassClass` and `OfferPassClass` now support per-locale translations.
+The change is **additive**: legacy string fields continue to carry the default
+value as a plain string, and the corresponding `localized*` fields carry the
+full `LocalizedString` object.
 
-| Class | Affected fields |
-|---|---|
-| `LoyaltyPassClass` | `programName`, `rewardsTier`, `rewardsTierLabel`, `accountNameLabel`, `accountIdLabel` |
-| `OfferPassClass` | `title`, `details`, `finePrint`, `provider` |
-
-The existing fields (`programName`, `title`, and so on) keep their plain-string
-format. Their `localizedProgramName`, `localizedTitle`, and related counterparts
-contain the `LocalizedString` payload, so existing integrations remain compatible
-with Google Wallet's API schema.
+| Class | Legacy field (string) | Localized field (LocalizedString) |
+|---|---|---|
+| `LoyaltyPassClass` | `programName` | `localizedProgramName` |
+| `LoyaltyPassClass` | `rewardsTier` | `localizedRewardsTier` |
+| `LoyaltyPassClass` | `rewardsTierLabel` | `localizedRewardsTierLabel` |
+| `LoyaltyPassClass` | `accountNameLabel` | `localizedAccountNameLabel` |
+| `LoyaltyPassClass` | `accountIdLabel` | `localizedAccountIdLabel` |
+| `OfferPassClass` | `title` | `localizedTitle` |
+| `OfferPassClass` | `provider` | `localizedProvider` |
+| `OfferPassClass` | `details` | `localizedDetails` |
+| `OfferPassClass` | `finePrint` | `localizedFinePrint` |
 
 Plain-string callers require no code changes:
 
@@ -30,6 +34,9 @@ $class->setProgramName(
         ->addTranslation('it', 'Club Spatie')
 );
 ```
+
+If you assert on raw API payloads in your own tests, note that the `localized*`
+fields now appear alongside the existing string fields.
 
 ---
 
