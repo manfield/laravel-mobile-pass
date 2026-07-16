@@ -1,5 +1,45 @@
 # Upgrading
 
+## Google Wallet i18n — LocalizedString for Loyalty and Offer pass classes
+
+`LoyaltyPassClass` and `OfferPassClass` now support per-locale translations.
+The change is **additive**: legacy string fields continue to carry the default
+value as a plain string, and the corresponding `localized*` fields carry the
+full `LocalizedString` object when translations are present.
+
+| Class | Legacy field (string) | Localized field (LocalizedString) |
+|---|---|---|
+| `LoyaltyPassClass` | `programName` | `localizedProgramName` |
+| `LoyaltyPassClass` | `rewardsTier` | `localizedRewardsTier` |
+| `LoyaltyPassClass` | `rewardsTierLabel` | `localizedRewardsTierLabel` |
+| `LoyaltyPassClass` | `accountNameLabel` | `localizedAccountNameLabel` |
+| `LoyaltyPassClass` | `accountIdLabel` | `localizedAccountIdLabel` |
+| `OfferPassClass` | `title` | `localizedTitle` |
+| `OfferPassClass` | `provider` | `localizedProvider` |
+| `OfferPassClass` | `details` | `localizedDetails` |
+| `OfferPassClass` | `finePrint` | `localizedFinePrint` |
+
+Plain-string callers require no code changes:
+
+```php
+// still works — no change required
+$class->setProgramName('Spatie Club');
+```
+
+To add translations, pass a `LocalizedString` directly:
+
+```php
+$class->setProgramName(
+    LocalizedString::of('Spatie Club', 'en-US')
+        ->addTranslation('it', 'Club Spatie')
+);
+```
+
+If you assert on raw API payloads in your own tests, note that the `localized*`
+fields now appear alongside the existing string fields.
+
+---
+
 ## Apple Wallet Internationalization
 
 This release adds Apple Wallet i18n support via a new `locales` nullable JSON column on the `mobile_passes` table.
